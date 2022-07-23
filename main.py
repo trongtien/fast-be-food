@@ -27,6 +27,25 @@ class UpdateStudent(BaseModel):
 def index():
     return {"name": "First Data"}
 
+
+@app.post("/login", tags=["login"])
+async def login():
+    return {
+        "id": 1,
+        "name": "admin",
+        "menu": [
+            { "id": "1", "name": 'Dashboard', "icon": "DesktopOutlined", "path": "/", "code": "dashboard", "subMenu": [] },
+            { "id": "2", "name": 'products', "icon": "DesktopOutlined", "path": "/", "code": "dashboard", "subMenu": [
+                    { "id": "2.1", "name": 'Products=Analytics', "icon": "UserOutlined", "path": "/products-analytics", "code": "products-analytics", "subMenu": [] },
+                    { id: "2.2", "name": 'Products=Schedule', "icon": "AppstoreOutlined", "path": "/products-schedule", "code": "products-schedule", "subMenu": [] }
+                ] 
+            },
+            { "id": "3", "name": 'analytics', "icon": "DesktopOutlined", "path": "/", "code": "dashboard", "subMenu": [] },
+            { "id": "4", "name": 'schedule', "icon": "DesktopOutlined", "path": "/", "code": "dashboard", "subMenu": [] }
+        ]
+    }
+    
+
 @app.get("/get-student/{student_id}")
 def get_student(student_id: int = Path(None, description="The ID of the student you want to view", gt=0, lt=3)):
     return students[student_id]
