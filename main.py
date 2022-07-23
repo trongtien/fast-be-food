@@ -18,6 +18,10 @@ class Student(BaseModel):
     age: int
     year: str
 
+class LoginRequest(BaseModel):
+    username: str
+    password: str
+
 class UpdateStudent(BaseModel):
     name: Optional[str] = None
     age: Optional[int] = None
@@ -29,10 +33,13 @@ def index():
 
 
 @app.post("/login", tags=["login"])
-async def login():
+async def login( login_request: LoginRequest):
     return {
         "id": 1,
         "name": "admin",
+        "avartar": "https://gravatar.com/avatar/bfc048fe6df7d1b3ab23762ff20e11eb?s=400&d=retro&r=x",
+        "role": "owner",
+        "token": "jhmgIDvk4kyj62iGgmYYnQ==",
         "menu": [
             { "id": "1", "name": 'Dashboard', "icon": "DesktopOutlined", "path": "/", "code": "dashboard", "subMenu": [] },
             { "id": "2", "name": 'products', "icon": "DesktopOutlined", "path": "/", "code": "dashboard", "subMenu": [
