@@ -3,7 +3,8 @@ from sqlalchemy.orm import Session
 from typing import Optional
 from pydantic import BaseModel
 from starlette.middleware.cors import CORSMiddleware
-from app.configs.postgresql import SessionLocalPostgre, engine_postgresql
+from app.configs.postgresql import SessionLocalPostgre
+from app.models.postgres.employee import EmployeeModel
 
 
 app = FastAPI()
@@ -17,15 +18,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 @app.middleware("http")
 async def db_session_middleware(request: Request, call_next):
     response = Response("Internal server error", status_code=500)
+    print("response", response)
     try:
         request.state.db = SessionLocalPostgre()
         response = await call_next(request)
-        print("response db sucess", response)
+
+        print("response", response)
     finally:
-        print("response db error close connect")
         request.state.db.close()
     return response
     
@@ -54,6 +57,9 @@ class UpdateStudent(BaseModel):
 
 @app.get("/")
 def index():
+    # print("SessionLocalPostgre.query(EmployeeModel)", SessionLocalPostgre.query(EmployeeModel))
+    session = SessionLocalPostgre()
+    print( session.query(EmployeeModel).all(), "asdjgashjdgsjahgjh")
     return {"name": "First Data"}
 
 
