@@ -6,14 +6,17 @@ docutils==0.19
 fastapi==0.79.0
 flit==3.7.1
 flit_core==3.7.1
+greenlet==1.1.2
 h11==0.13.0
 httptools==0.4.0
 idna==3.3
+psycopg2-binary==2.9.3
 pydantic==1.9.1
 python-dotenv==0.20.0
 PyYAML==6.0
 requests==2.28.1
 sniffio==1.2.0
+SQLAlchemy==1.4.39
 starlette==0.19.1
 tomli==2.0.1
 tomli_w==1.0.0

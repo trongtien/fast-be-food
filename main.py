@@ -1,9 +1,34 @@
-from fastapi import FastAPI, Path
+from fastapi import Depends, FastAPI, HTTPException, Request, Response, Path
+from sqlalchemy.orm import Session
 from typing import Optional
 from pydantic import BaseModel
+from starlette.middleware.cors import CORSMiddleware
+from app.configs.postgresql import SessionLocalPostgre, engine_postgresql
 
 
 app = FastAPI()
+
+# Set all CORS enabled origins
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+@app.middleware("http")
+async def db_session_middleware(request: Request, call_next):
+    response = Response("Internal server error", status_code=500)
+    try:
+        request.state.db = SessionLocalPostgre()
+        response = await call_next(request)
+        print("response db sucess", response)
+    finally:
+        print("response db error close connect")
+        request.state.db.close()
+    return response
+    
 
 students = {
     1: {
